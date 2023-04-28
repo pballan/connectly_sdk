@@ -1,0 +1,7 @@
+curl --location
+    'https://64371b533e4d2b4a12e3c52a.mockapi.io/api/v1/send_message' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "customerName": "Dave",
+        "customerNumber": "13105551234"
+    }'
