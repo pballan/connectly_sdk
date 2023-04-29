@@ -39,26 +39,36 @@ async def make_requests(req_batch):
     return await aaa(req_batch)
 
 async def aaa(req_batch):
-    responses = {}
+    responses = []
+    result = {}
+    tasks = []
+
     for msg_req in req_batch.batch:
-        responses[msg_req.id] = await requests.post(msg_req.url, headers=msg_req.headers, data=msg_req.data)
+        tasks.append(asyncio.create_task(requests.post(msg_req.url, headers=msg_req.headers, data=msg_req.data)))
+    
+    responses = await asyncio.gather(*tasks)
+
     return responses
 
 async def test(i):
     await asyncio.sleep(1)
     print("testea3 " + str(i))
-    return 
+    return "alan"
     
 
 async def main():
     tasks = []
     for i in range(0,5):
-        tasks.append(asyncio.create_task(   test(i)))
-    print("uwu")
-    l = await asyncio.gather(*tasks)
+        tasks.append(asyncio.create_task(test(i)))
+
+
+    await asyncio.gather(tasks[0])
+    print(tasks[0].done())
+
     #asyncio.gather(test(1),test(2))
-    print("asdasdas")
+    #print(l)
     return     
 
 if __name__ ==  '__main__':
     asyncio.run(main())
+    print("alanette es kawaii")
